@@ -2,7 +2,7 @@
 
 A lightweight CLI tool for generating structured Markdown notes for technical blogs and study logs.
 
-中文说明见：[README.zh-CN.md](/Users/wenzy/Documents/Playground/README.zh-CN.md)
+中文说明见：[README.zh-CN.md](./README.zh-CN.md)
 
 ## Why
 

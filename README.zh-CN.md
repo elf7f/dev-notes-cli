@@ -2,7 +2,7 @@
 
 一个轻量的命令行工具，用于快速生成结构化技术博客/学习笔记 Markdown 模板。
 
-English README: [README.md](/Users/wenzy/Documents/Playground/README.md)
+English README: [README.md](./README.md)
 
 ## 项目背景
 
