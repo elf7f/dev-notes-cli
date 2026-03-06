@@ -1,9 +1,18 @@
+# Python runtime/cache
 __pycache__/
 *.py[cod]
+
+# Packaging/build artifacts
+build/
+dist/
 *.egg-info/
-.pytest_cache/
+
+# Local environments
 .venv/
 .env
-.DS_Store
-.idea/
+
+# Local tooling/cache
+.pytest_cache/
 .smoke/
+.idea/
+.DS_Store

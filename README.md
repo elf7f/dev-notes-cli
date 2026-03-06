@@ -6,34 +6,30 @@ A lightweight CLI tool for generating structured Markdown notes for technical bl
 
 ## Why
 
-When writing technical notes for Hugo or other static blogs, creating front matter and article structure repeatedly is tedious and error-prone. `dev-notes-cli` generates a clean note file in one command and keeps your posts consistent.
+When writing technical notes for Hugo or other static blogs, creating front matter and article structure repeatedly is tedious and error-prone. `dev-notes-cli` generates a clean note file in one command.
 
 ## Features
 
 - Create Markdown notes from the command line
 - Generate YAML front matter automatically
 - Support `tags`, `category`, and `summary`
-- Support multiple templates: `note`, `project`, `interview`
+- Support templates: `note`, `project`, `interview`
 - Configurable defaults via `.devnotes.yaml`
 - Built-in `doctor` command for setup checks
 
-## Tech Stack
+## Minimal Dependencies
 
-- Python 3.11+
-- Typer
-- pathlib / datetime / re / unicodedata
-- PyYAML
+Runtime dependency downloads: **none** (standard library only).
 
 ## Project Structure
 
 ```text
 dev-notes-cli/
 ├── README.md
+├── README.zh-CN.md
 ├── LICENSE
-├── pyproject.toml
+├── setup.py
 ├── Makefile
-├── docs/
-│   └── plan.md
 ├── devnotes/
 │   ├── __init__.py
 │   ├── cli.py
@@ -42,31 +38,24 @@ dev-notes-cli/
 │   ├── templates.py
 │   ├── utils.py
 │   └── doctor.py
-├── tests/
-│   ├── test_slug.py
-│   ├── test_generator.py
-│   └── test_config.py
-└── examples/
-    ├── example-note.md
-    ├── example-project.md
-    └── example-interview.md
+└── .gitignore
 ```
 
-## Install (Beginner-Friendly)
+## Install (Minimal Download)
 
-1. Check Python is available (3.11+ recommended):
+1. Check Python is available:
 
 ```bash
 python3 --version
 ```
 
-2. Create a project-local virtual environment:
+2. Create virtual environment:
 
 ```bash
 python3 -m venv .venv
 ```
 
-3. Activate the environment:
+3. Activate environment:
 
 macOS / Linux:
 
@@ -86,36 +75,29 @@ Windows CMD:
 .\.venv\Scripts\activate.bat
 ```
 
-4. Install the package and dev dependencies:
+4. Install project only:
 
 ```bash
-pip install ".[dev]"
+pip install .
 ```
 
-5. Verify CLI works:
+5. Verify:
 
 ```bash
 devnotes --help
 ```
 
-You can also use Makefile shortcuts:
-
-```bash
-make venv
-make install
-```
-
 ## Remove / Uninstall
 
-If you installed in a virtual environment, remove it:
+If you installed with virtual environment:
 
-1. Leave the environment if active:
+1. Exit environment if active:
 
 ```bash
 deactivate
 ```
 
-2. Delete the `.venv` directory:
+2. Remove `.venv`:
 
 macOS / Linux:
 
@@ -129,7 +111,7 @@ Windows PowerShell:
 Remove-Item -Recurse -Force .venv
 ```
 
-If you installed globally by mistake, remove global package too:
+If you installed globally, also uninstall package:
 
 ```bash
 pip uninstall dev-notes-cli
@@ -140,6 +122,7 @@ pip uninstall dev-notes-cli
 ```bash
 devnotes init
 devnotes new "Redis缓存击穿总结" --tags redis,java --category 面试笔记 --template interview
+devnotes doctor
 ```
 
 ## Commands
@@ -166,28 +149,10 @@ devnotes init
 devnotes list-templates
 ```
 
-Example output:
-
-```text
-- interview: Interview Q&A template.
-- note: General technical note template.
-- project: Project review template.
-```
-
 ### `devnotes doctor`
 
 ```bash
 devnotes doctor
-```
-
-Example output:
-
-```text
-[OK] Config file: /path/to/.devnotes.yaml
-[OK] Config parse: Configuration is valid
-[OK] Output dir exists: /path/to/content/posts
-[OK] Output dir writable: /path/to/content/posts
-Doctor check passed.
 ```
 
 ## Config
@@ -202,40 +167,3 @@ timezone: "+08:00"
 slugify: true
 overwrite: false
 ```
-
-## Generated Markdown Example
-
-```markdown
----
-title: "Redis缓存击穿总结"
-date: 2026-03-06T21:00:00+08:00
-draft: false
-tags: ["redis", "java"]
-categories: ["面试笔记"]
-summary: "缓存击穿场景分析与常见方案。"
----
-
-## 问题
-
-## 回答思路
-
-## 延伸问题
-
-## 总结
-```
-
-## Makefile Shortcuts
-
-```bash
-make test
-make templates
-make smoke
-```
-
-## Roadmap
-
-- [x] Generate basic note templates
-- [x] Support YAML front matter
-- [ ] Custom template support
-- [ ] Interactive mode
-- [ ] Hugo-specific integrations

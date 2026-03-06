@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-import yaml
 
 CONFIG_FILENAME = ".devnotes.yaml"
 
@@ -19,25 +18,58 @@ def config_path(cwd: Path) -> Path:
     return cwd / CONFIG_FILENAME
 
 
+def _parse_scalar(raw: str) -> object:
+    text = raw.strip()
+    if text in {"true", "True"}:
+        return True
+    if text in {"false", "False"}:
+        return False
+    if (text.startswith('"') and text.endswith('"')) or (text.startswith("'") and text.endswith("'")):
+        return text[1:-1]
+    return text
+
+
+def _parse_simple_yaml(text: str) -> dict[str, object]:
+    result: dict[str, object] = {}
+    for idx, line in enumerate(text.splitlines(), start=1):
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        if ":" not in line:
+            raise ValueError(f"Invalid config line {idx}: {line}")
+        key, value = line.split(":", 1)
+        key = key.strip()
+        if not key:
+            raise ValueError(f"Invalid empty key at line {idx}")
+        result[key] = _parse_scalar(value)
+    return result
+
+
 def load_config(cwd: Path) -> dict[str, object]:
     path = config_path(cwd)
     data: dict[str, object] = {}
 
     if path.exists():
-        raw = yaml.safe_load(path.read_text(encoding="utf-8"))
-        if raw is None:
-            raw = {}
-        if not isinstance(raw, dict):
+        data = _parse_simple_yaml(path.read_text(encoding="utf-8"))
+        if not isinstance(data, dict):
             raise ValueError(f"Invalid config in {path}: expected a key-value mapping")
-        data = raw
 
     merged = dict(DEFAULT_CONFIG)
     merged.update(data)
     return merged
 
 
+def _dump_scalar(value: object) -> str:
+    if isinstance(value, bool):
+        return "true" if value else "false"
+    text = str(value)
+    escaped = text.replace("\\", "\\\\").replace('"', '\\"')
+    return f'"{escaped}"'
+
+
 def dump_default_config() -> str:
-    return yaml.safe_dump(DEFAULT_CONFIG, sort_keys=False, allow_unicode=True)
+    lines = [f"{key}: {_dump_scalar(value)}" for key, value in DEFAULT_CONFIG.items()]
+    return "\n".join(lines) + "\n"
 
 
 def init_config(cwd: Path, force: bool = False) -> Path:

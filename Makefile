@@ -3,13 +3,12 @@ VENV ?= .venv
 BIN := $(VENV)/bin
 RUN := PYTHONPATH=. $(BIN)/python -m devnotes.cli
 
-.PHONY: help venv install test templates smoke clean
+.PHONY: help venv install templates smoke clean
 
 help:
 	@echo "Targets:"
 	@echo "  make venv      - create virtual environment"
-	@echo "  make install   - install project + dev dependencies"
-	@echo "  make test      - run unit tests"
+	@echo "  make install   - install project only (minimal download)"
 	@echo "  make templates - list built-in templates"
 	@echo "  make smoke     - run init/new/doctor end-to-end check"
 	@echo "  make clean     - remove generated smoke workspace"
@@ -18,10 +17,7 @@ venv:
 	$(PYTHON) -m venv $(VENV)
 
 install:
-	$(BIN)/pip install ".[dev]"
-
-test:
-	PYTHONPATH=. $(BIN)/python -m pytest
+	PYTHONDONTWRITEBYTECODE=1 $(BIN)/pip install .
 
 templates:
 	$(RUN) list-templates

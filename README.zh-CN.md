@@ -13,28 +13,23 @@ English README: [README.md](./README.md)
 - 命令行创建 Markdown 技术笔记
 - 自动生成 YAML front matter
 - 支持 `tags`、`category`、`summary`
-- 内置三种模板：`note`、`project`、`interview`
+- 支持模板：`note`、`project`、`interview`
 - 支持 `.devnotes.yaml` 默认配置
 - 内置 `doctor` 健康检查命令
 
-## 技术栈
+## 最小依赖
 
-- Python 3.11+
-- Typer
-- pathlib / datetime / re / unicodedata
-- PyYAML
+运行时依赖下载：**0 个第三方包**（只用 Python 标准库）。
 
-## 目录结构
+## 项目结构
 
 ```text
 dev-notes-cli/
 ├── README.md
 ├── README.zh-CN.md
 ├── LICENSE
-├── pyproject.toml
+├── setup.py
 ├── Makefile
-├── docs/
-│   └── plan.md
 ├── devnotes/
 │   ├── __init__.py
 │   ├── cli.py
@@ -43,25 +38,18 @@ dev-notes-cli/
 │   ├── templates.py
 │   ├── utils.py
 │   └── doctor.py
-├── tests/
-│   ├── test_slug.py
-│   ├── test_generator.py
-│   └── test_config.py
-└── examples/
-    ├── example-note.md
-    ├── example-project.md
-    └── example-interview.md
+└── .gitignore
 ```
 
-## 安装（零 Python 背景可用）
+## 安装（最少下载）
 
-1. 先确认有 Python（建议 3.11+）：
+1. 先确认 Python 可用：
 
 ```bash
 python3 --version
 ```
 
-2. 在项目目录创建虚拟环境（项目隔离，不污染全局）：
+2. 在项目目录创建虚拟环境：
 
 ```bash
 python3 -m venv .venv
@@ -87,10 +75,10 @@ Windows CMD：
 .\.venv\Scripts\activate.bat
 ```
 
-4. 安装项目和开发依赖：
+4. 仅安装项目本体：
 
 ```bash
-pip install ".[dev]"
+pip install .
 ```
 
 5. 验证是否安装成功：
@@ -99,24 +87,17 @@ pip install ".[dev]"
 devnotes --help
 ```
 
-也可以使用 Makefile 快捷命令：
-
-```bash
-make venv
-make install
-```
-
 ## 移除/卸载
 
-如果是按上面的虚拟环境方式安装，移除步骤如下：
+如果是虚拟环境安装：
 
-1. 如果当前已激活虚拟环境，先退出：
+1. 先退出虚拟环境（如果已激活）：
 
 ```bash
 deactivate
 ```
 
-2. 删除虚拟环境目录 `.venv`：
+2. 删除 `.venv` 目录：
 
 macOS / Linux：
 
@@ -130,7 +111,7 @@ Windows PowerShell：
 Remove-Item -Recurse -Force .venv
 ```
 
-如果你曾经做过全局安装（不是 `.venv`），再执行：
+如果你做过全局安装，再执行：
 
 ```bash
 pip uninstall dev-notes-cli
@@ -141,13 +122,12 @@ pip uninstall dev-notes-cli
 ```bash
 devnotes init
 devnotes new "Redis缓存击穿总结" --tags redis,java --category 面试笔记 --template interview
+devnotes doctor
 ```
 
 ## 命令说明
 
 ### `devnotes new`
-
-创建新文章：
 
 ```bash
 devnotes new "JWT登录实现" \
@@ -159,44 +139,20 @@ devnotes new "JWT登录实现" \
 
 ### `devnotes init`
 
-初始化配置文件：
-
 ```bash
 devnotes init
 ```
 
 ### `devnotes list-templates`
 
-列出内置模板：
-
 ```bash
 devnotes list-templates
 ```
 
-示例输出：
-
-```text
-- interview: Interview Q&A template.
-- note: General technical note template.
-- project: Project review template.
-```
-
 ### `devnotes doctor`
-
-检查配置和输出目录：
 
 ```bash
 devnotes doctor
-```
-
-示例输出：
-
-```text
-[OK] Config file: /path/to/.devnotes.yaml
-[OK] Config parse: Configuration is valid
-[OK] Output dir exists: /path/to/content/posts
-[OK] Output dir writable: /path/to/content/posts
-Doctor check passed.
 ```
 
 ## 配置文件
@@ -211,40 +167,3 @@ timezone: "+08:00"
 slugify: true
 overwrite: false
 ```
-
-## 生成结果示例
-
-```markdown
----
-title: "Redis缓存击穿总结"
-date: 2026-03-06T21:00:00+08:00
-draft: false
-tags: ["redis", "java"]
-categories: ["面试笔记"]
-summary: "缓存击穿场景分析与常见方案。"
----
-
-## 问题
-
-## 回答思路
-
-## 延伸问题
-
-## 总结
-```
-
-## Makefile 快捷命令
-
-```bash
-make test
-make templates
-make smoke
-```
-
-## Roadmap
-
-- [x] 基础模板生成
-- [x] YAML front matter 支持
-- [ ] 自定义模板支持
-- [ ] 交互式模式
-- [ ] Hugo 专项集成
