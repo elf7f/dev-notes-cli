@@ -53,18 +53,87 @@ dev-notes-cli/
     └── example-interview.md
 ```
 
-## 安装
+## 安装（零 Python 背景可用）
+
+1. 先确认有 Python（建议 3.11+）：
+
+```bash
+python3 --version
+```
+
+2. 在项目目录创建虚拟环境（项目隔离，不污染全局）：
 
 ```bash
 python3 -m venv .venv
-.venv/bin/pip install ".[dev]"
 ```
 
-或者使用 Makefile：
+3. 激活虚拟环境：
+
+macOS / Linux：
+
+```bash
+source .venv/bin/activate
+```
+
+Windows PowerShell：
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+Windows CMD：
+
+```bat
+.\.venv\Scripts\activate.bat
+```
+
+4. 安装项目和开发依赖：
+
+```bash
+pip install ".[dev]"
+```
+
+5. 验证是否安装成功：
+
+```bash
+devnotes --help
+```
+
+也可以使用 Makefile 快捷命令：
 
 ```bash
 make venv
 make install
+```
+
+## 移除/卸载
+
+如果是按上面的虚拟环境方式安装，移除步骤如下：
+
+1. 如果当前已激活虚拟环境，先退出：
+
+```bash
+deactivate
+```
+
+2. 删除虚拟环境目录 `.venv`：
+
+macOS / Linux：
+
+```bash
+rm -rf .venv
+```
+
+Windows PowerShell：
+
+```powershell
+Remove-Item -Recurse -Force .venv
+```
+
+如果你曾经做过全局安装（不是 `.venv`），再执行：
+
+```bash
+pip uninstall dev-notes-cli
 ```
 
 ## 快速开始

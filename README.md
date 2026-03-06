@@ -52,18 +52,87 @@ dev-notes-cli/
     └── example-interview.md
 ```
 
-## Install
+## Install (Beginner-Friendly)
+
+1. Check Python is available (3.11+ recommended):
+
+```bash
+python3 --version
+```
+
+2. Create a project-local virtual environment:
 
 ```bash
 python3 -m venv .venv
-.venv/bin/pip install ".[dev]"
 ```
 
-Or use Makefile:
+3. Activate the environment:
+
+macOS / Linux:
+
+```bash
+source .venv/bin/activate
+```
+
+Windows PowerShell:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+Windows CMD:
+
+```bat
+.\.venv\Scripts\activate.bat
+```
+
+4. Install the package and dev dependencies:
+
+```bash
+pip install ".[dev]"
+```
+
+5. Verify CLI works:
+
+```bash
+devnotes --help
+```
+
+You can also use Makefile shortcuts:
 
 ```bash
 make venv
 make install
+```
+
+## Remove / Uninstall
+
+If you installed in a virtual environment, remove it:
+
+1. Leave the environment if active:
+
+```bash
+deactivate
+```
+
+2. Delete the `.venv` directory:
+
+macOS / Linux:
+
+```bash
+rm -rf .venv
+```
+
+Windows PowerShell:
+
+```powershell
+Remove-Item -Recurse -Force .venv
+```
+
+If you installed globally by mistake, remove global package too:
+
+```bash
+pip uninstall dev-notes-cli
 ```
 
 ## Quick Start
